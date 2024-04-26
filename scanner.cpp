@@ -10,9 +10,9 @@
 #include "scanner.h"
 #include "parser.h"
 
-const int TABLE_SIZE = 12;
+const int TABLE_SIZE4 = 12;
 
-int tableArr[TABLE_SIZE][TABLE_SIZE] = {
+int tableArr[TABLE_SIZE4][TABLE_SIZE4] = {
         { 1, -1, 3, 5, 6, -2, 8, -3, 10, -4, 0, 1001 },
         { -5, 2, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5 },
         { 1002, 2, 1002, 1002, 1002, 1002, 1002, 1002, 1002, 1002, 1002, 1002 },
