@@ -234,14 +234,14 @@ char* codeGenX(node_t* xNode, char* fNum1) {
 
         sprintf(tempVarBuf, "t%d", tempVarCount);
         tempVarCount++;
-        fprintf(filePointer, "LOAD %s\nADD %s\nSTORE %s", fNum1, fNum2, tempVarBuf);
+        fprintf(filePointer, "LOAD %s\nADD %s\nSTORE %s\n", fNum1, fNum2, tempVarBuf);
 
         printf("<- codeGenX(end)\n");
         return strBuf;
     } else {
         sprintf(tempVarBuf, "t%d", tempVarCount);
         tempVarCount++;
-        fprintf(filePointer, "LOAD %s\nSTORE %s", fNum1, tempVarBuf);
+        fprintf(filePointer, "LOAD %s\nSTORE %s\n", fNum1, tempVarBuf);
 
         printf("<- codeGenX(end)\n");
         return fNum1;
