@@ -165,10 +165,10 @@ char* codeGenF(node_t* fNode) {
             printf("<- codeGenF(end)\n");
             return strdup(fNode->childOne->tokenInstance - 1);
         } else {
-            strBuff = malloc(strlen(fNode->childOne->tokenInstance) + 2);
+            strBuf = malloc(strlen(fNode->childOne->tokenInstance) + 2);
             sprintf(strBuf, "-%s", fNode->childOne->tokenInstance - 1);
             printf("<- codeGenF(end)\n");
-            return strBuff;
+            return strBuf;
         }
     }
 }
