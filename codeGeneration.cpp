@@ -19,7 +19,7 @@ void codeGeneration(node_t* tree) {
 
     // Add symbolTable to codeGenerationFile
     printf("STOP\n");
-    for (int i = 0; i < TABLE_SIZE; i++) {
+    for (int i = 0; i < 100; i++) {
         if (symbolTable[i][0] != '\0') {
             printf("%s 0\n", symbolTable[i]);
         }

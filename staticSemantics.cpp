@@ -18,6 +18,7 @@ const char* tokenNames1[] = {
         "Unknown"
 };
 
+const int TABLE_SIZE = 100;
 char symbolTable[TABLE_SIZE][MAX_TOKEN_SIZE2];
 bool isNewIdentifier = false;
 

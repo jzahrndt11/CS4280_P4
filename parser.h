@@ -12,8 +12,8 @@
 extern char nextChar;
 extern FILE* filePointer;
 
-extern const int TABLE_SIZE = 100;
-extern char symbolTable[TABLE_SIZE][MAX_TOKEN_SIZE2];
+
+extern char symbolTable[100][MAX_TOKEN_SIZE2];
 
 node_t* parser();
 void filter();
