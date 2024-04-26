@@ -15,9 +15,7 @@ void codeGeneration(node_t* tree) {
 
     traversePreOrderCodeGen(tree, 0);
 
-    printf("----------------Code Generation Passed--------------------------\n");
-
-    // Add symbolTable to codeGenerationFile
+    // Add STOP and symbolTable to codeGenerationFile
     printf("STOP\n");
     for (int i = 0; i < 100; i++) {
         if (symbolTable[i][0] != '\0') {
@@ -76,7 +74,7 @@ void traversePreOrderCodeGen(node_t* root, int level) {
             //run function codeGenY();
             break;
         case 'Z':
-            printf("In a Z Label\n");
+            //printf("In a Z Label\n");
 
             if (isCLabel) {
                 codeGenC(root);
@@ -128,8 +126,7 @@ void codeGenB(node_t* bNode) {
 
 // C -> t2*     read in int, allocate memory (ex: v10 for %10), assign value = int ----------------------------------
 void codeGenC(node_t* cNode) {
-    printf("codeGenC()\n");
-
+    //printf("codeGenC()\n");
     printf("READ %s\n", cNode->tokenInstance);
 }
 
