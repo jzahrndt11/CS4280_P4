@@ -26,8 +26,12 @@ void codeGeneration(node_t* tree) {
     }
 }
 
+// Global boolean variables
+bool isCLabel = false;
+
 // Traverse Pre-order function -----------------------------------------------------------------------------------------
 void traversePreOrderCodeGen(node_t* root, int level) {
+
     // Base case
     if (root == NULL) {
         return;
@@ -45,7 +49,7 @@ void traversePreOrderCodeGen(node_t* root, int level) {
             //run function codeGenB();
             break;
         case 'C':
-            codeGenC(root);
+            isCLabel = true;
             break;
         case 'D':
             //run function codeGenD();
@@ -70,6 +74,15 @@ void traversePreOrderCodeGen(node_t* root, int level) {
             break;
         case 'Y':
             //run function codeGenY();
+            break;
+        case 'Z':
+            printf("In a Z Label\n");
+
+            if (isCLabel) {
+                codeGenC(root);
+                isCLabel = false;
+            }
+
             break;
     }
 
