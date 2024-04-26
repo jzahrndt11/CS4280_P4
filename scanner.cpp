@@ -93,6 +93,8 @@ Token scanner() {
                     return token;
                 case 1003:
                     token.tokenId = T2_Token;
+                    token.tokenInstance[0] = 'v';
+                    printf("Scanner: T2 Token: { %s }", token.tokenInstance);
                     return token;
                 case 1004:
                     token.tokenId = T3_Token;
