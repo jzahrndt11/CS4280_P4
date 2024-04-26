@@ -12,6 +12,7 @@
 #include "codeGeneration.h"
 #include "parser.h"
 
+int tempVarCount = 0;
 
 // Code Generation function  -------------------------------------------------------------------------------------------
 void codeGeneration(node_t* tree) {
@@ -222,18 +223,26 @@ void codeGenJ(node_t* jNode) {
  *  ------------------------------------------------------------------------------------------------------------------*/
 char* codeGenX(node_t* xNode, char* fNum1) {
     printf("-> codeGenX(start)\n");
+    char* tempVarBuf = (char*) malloc(sizeof(char) * 6);
 
     // Logic Here ...
     if (xNode->childOne->label == 'F') {
         char* fNum2 = codeGenF(xNode->childOne);
         int sum = atoi(fNum1) + atoi(fNum2);
-
         char* strBuf = (char*) malloc(sizeof(char) * 20);
         sprintf(strBuf, "%d", sum);
+
+        sprintf(tempVarBuf, "t%d", tempVarCount);
+        tempVarCount++;
+        fprintf(filePointer, "LOAD %s\nADD %s\nSTORE %s", fNum1, fNum2, tempVarBuf)
 
         printf("<- codeGenX(end)\n");
         return strBuf;
     } else {
+        sprintf(tempVarBuf, "t%d", tempVarCount);
+        tempVarCount++;
+        fprintf(filePointer, "LOAD %s\nSTORE %s", fNum1, tempVarBuf);
+
         printf("<- codeGenX(end)\n");
         return fNum1;
     }
