@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "staticSemantics.h"
-#include "parser.h"
 
 const char* tokenNames1[] = {
         "EOF Token",
@@ -19,6 +18,7 @@ const char* tokenNames1[] = {
         "Unknown"
 };
 
+char symbolTable[TABLE_SIZE][MAX_TOKEN_SIZE2];
 bool isNewIdentifier = false;
 
 // Static Semantics function --------------------------------------------------------------------------------------------------
