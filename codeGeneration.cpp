@@ -35,40 +35,40 @@ void traversePreOrderCodeGen(node_t* root, int level) {
 
     // Start Logic Here
     switch (root->label) {
-        case: 'S':
+        case 'S':
             //run function codeGenS(); - (Dont think I need)
             break;
-        case: 'A':
+        case 'A':
             //run function codeGenA();
             break;
-        case: 'B':
+        case 'B':
             //run function codeGenB();
             break;
-        case: 'C':
+        case 'C':
             codeGenC(root);
             break;
-        case: 'D':
+        case 'D':
             //run function codeGenD();
             break;
-        case: 'E':
+        case 'E':
             //run function codeGenE();
             break;
-        case: 'F':
+        case 'F':
             //run function codeGenF();
             break;
-        case: 'G':
+        case 'G':
             //run function codeGenG();
             break;
-        case: 'H':
+        case 'H':
             //run function codeGenH();
             break;
-        case: 'J':
+        case 'J':
             //run function codeGenJ();
             break;
-        case: 'X':
+        case 'X':
             //run function codeGenX();
             break;
-        case: 'Y':
+        case 'Y':
             //run function codeGenY();
             break;
     }
