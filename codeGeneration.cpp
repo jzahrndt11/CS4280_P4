@@ -64,7 +64,7 @@ int codeGenA(node_t* aNode) {
 
     // A -> X -> ?$  ==  sum
     if (strcmp(aNode->childTwo->childTwo->tokenInstance, "?$") == 0) {
-        int sum = 0;
+        int sum;
         sum = atoi(aNode->childOne->tokenInstance) + atoi(aNode->childTwo->childOne->tokenInstance);
         printf("codeGenA(): sum = %d", sum);
 
