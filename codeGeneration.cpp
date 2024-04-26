@@ -10,18 +10,6 @@
 #include <string.h>
 #include "codeGeneration.h"
 
-const char* tokenNames1[] = {
-        "EOF Token",
-        "T1 Token",
-        "T2 Token",
-        "T3 Token",
-        "Unknown"
-};
-
-const int TABLE_SIZE = 5;
-char symbolTable[TABLE_SIZE][MAX_TOKEN_SIZE2];
-bool isNewIdentifier = false;
-
 // Test Tree function --------------------------------------------------------------------------------------------------
 void codeGeneration(node_t* tree) {
 
