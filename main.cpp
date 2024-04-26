@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include "parser.h"
 #include "staticSemantics.h"
+#include "codeGeneration.h"
 
 FILE* filePointer = nullptr;
 
@@ -50,6 +51,7 @@ int main(int argc, char* argv[]) {
     // Test Scanner function call
     tree = parser();
     staticSem(tree);
+    codeGeneration(tree);
 
     if (outputFileCreated) {
         system("rm out");
