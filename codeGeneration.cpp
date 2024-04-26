@@ -7,9 +7,9 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include "codeGeneration.h"
 #include "parser.h"
-
 
 
 // Code Generation function --------------------------------------------------------------------------------------------------
@@ -18,7 +18,11 @@ void codeGeneration(node_t* tree) {
     sprintf(fileBuf,"%s.asm", file);
     filePointer = fopen(fileBuf, "w");
 
-    traversePreOrderCodeGen(tree, 0);
+    if (tree->label == 'S') {
+        codeGenS(tree);
+    } else {
+        printf("codeGeneration.cpp: ERROR running codeGenS() - label was not S");
+    }
 
     // Add STOP and symbolTable to codeGenerationFile
     fprintf(filePointer, "STOP\n");
@@ -29,155 +33,93 @@ void codeGeneration(node_t* tree) {
     }
 }
 
-// Global boolean variables
-bool isCLabel = false;
-
-// Traverse Pre-order function -----------------------------------------------------------------------------------------
-void traversePreOrderCodeGen(node_t* root, int level) {
-
-    // Base case
-    if (root == NULL) {
-        return;
-    }
-
-    // Start Logic Here
-    switch (root->label) {
-        case 'S':
-            //run function codeGenS(); - (Dont think I need)
-            break;
-        case 'A':
-            //run function codeGenA();
-            break;
-        case 'B':
-            //run function codeGenB();
-            break;
-        case 'C':
-            isCLabel = true;
-            break;
-        case 'D':
-            //run function codeGenD();
-            break;
-        case 'E':
-            //run function codeGenE();
-            break;
-        case 'F':
-            //run function codeGenF();
-            break;
-        case 'G':
-            //run function codeGenG();
-            break;
-        case 'H':
-            //run function codeGenH();
-            break;
-        case 'J':
-            //run function codeGenJ();
-            break;
-        case 'X':
-            //run function codeGenX();
-            break;
-        case 'Y':
-            //run function codeGenY();
-            break;
-        case 'Z':
-            //printf("In a Z Label\n");
-
-            if (isCLabel) {
-                codeGenC(root);
-                isCLabel = false;
-            }
-
-            break;
-    }
-
-    // traverse left-most subtree (if needed)
-    if (root->childOne != NULL) {
-        traversePreOrderCodeGen(root->childOne, level + 1);
-    }
-
-    // traverse next subtree (if needed)
-    if (root->childTwo != NULL) {
-        traversePreOrderCodeGen(root->childTwo, level + 1);
-    }
-
-    // traverse next subtree (if needed)
-    if (root->childThree != NULL) {
-        traversePreOrderCodeGen(root->childThree, level + 1);
-    }
-
-    // traverse right-most subtree (if needed)
-    if (root->childFour != NULL) {
-        traversePreOrderCodeGen(root->childFour, level + 1);
-    }
-}
-
-// S -> CD      read an int and allocate memory, any number of additional operations ----------------------------------------------------------
+// S -> CD      read an int and allocate memory, any number of additional operations ---------------------------------------------------------
 void codeGenS(node_t* sNode) {
     printf("codeGenS()\n");
 
-
+    codeGenC(sNode->childOne);
+    codeGenD(sNode->childTwo);
 }
 
-// A -> FX      sum | int or identifier --------------------------------------------------------------------------------------------------------
+// A -> FX      sum | int or identifier ------------------------------------------------------------------------------------------------------
 void codeGenA(node_t* aNode) {
     printf("codeGenA()\n");
 
+    codeGenF(aNode->childOne);
+    codeGenX(aNode->childTwo);
 }
 
-// B -> .t2A!       -------------------------------------------------
+// B -> .t2A!      assign value of A to identifier t2 ----------------------------------------------------------------------------------------
 void codeGenB(node_t* bNode) {
     printf("codeGenB()\n");
 
+
+    // ...
+
+
 }
 
-// C -> t2*     read in int, allocate memory (ex: v10 for %10), assign value = int ----------------------------------
+// C -> t2*     read in int, allocate memory (ex: v10 for %10), assign value = int ------------------------------------------------------------
 void codeGenC(node_t* cNode) {
-    //printf("codeGenC()\n");
-    fprintf(filePointer, "READ %s\n", cNode->tokenInstance);
+    printf("codeGenC()\n");
+
+    fprintf(filePointer, "READ %s\n", cNode->childOne->tokenInstance);
 }
 
-// D -> Y           ( First set: , ,; . t2 *" ? empty )
+// D -> Y       originally: D -> H?D | empty for recursion ------------------------------------------------------------------------------------
 void codeGenD(node_t* dNode) {
     printf("codeGenD()\n");
 
+    codeGenY(dNode->childOne);
 }
 
-// E -> ,AAH | ,;FH             ( First set: , | ,; ) -----------------------------------------------------------------------------------------------
+// E -> ,AAH | ,;FH     if first A > second A, do H   |    do H, F times  ---------------------------------------------------------------------
 void codeGenE(node_t* eNode) {
     printf("codeGenE()\n");
 
 }
 
-// F -> t1 | t2         ( First set: t1 | t2 ) --------------------------------------------------------------------------------------------------------
+// F -> t1 | t2        number  |  identifier  -------------------------------------------------------------------------------------------------
 void codeGenF(node_t* fNode) {
     printf("codeGenF()\n");
 
+    // T1 Token
+    if (fNode->tokenId == T1_Token) {
+        if (isalpha(fNode->tokenInstance[0])) {
+            fprintf(filePointer, "LOAD %s\n", fNode->tokenInstance + 1);
+        } else {
+            fprintf(filePointer, "LOAD -%s\n", fNode->tokenInstance + 1);
+        }
+    }
+    // T2 Token
+    else {
+        fprintf(filePointer, "LOAD %s\n", fNode->tokenInstance);
+    }
 }
 
-// G -> B | C | J           ( First set: . | t2 | *" ) --------------------------------------------------------------------------------------------
+// G -> B | C | J       assignment  |  read int and allocate memory  |  print value to screen  ------------------------------------------------
 void codeGenG(node_t* gNode) {
     printf("codeGenG()\n");
-
 }
 
-// H -> E? | G. | empty         ( First set: , ,; | . t2 *" | empty ) -------------------------------------------------------------------------------
+// H -> E? | G. | empty     if, for   |  assignment, read int and allocate memory  |  print value  --------------------------------------------
 void codeGenH(node_t* hNode){
     printf("codeGenH()\n");
-
 }
 
-// J -> *"A.        ( First set: *" ) ----------------------------------------------------------------------------------------------------------
+// J -> *"A.        print integer value to screen (sum, int, or identifier) -------------------------------------------------------------------
 void codeGenJ(node_t* jNode) {
     printf("codeGenJ()\n");
-
+    fprintf(filePointer, "WRITE ");
 }
 
-// X -> F?$ | .         ( First set: t1 t2 | . ) ----------------------------------------------------------------------------------------------
+// X -> F?$ | .
 void codeGenX(node_t* xNode) {
     printf("codeGenX()\n");
 
 }
 
-// Y -> H?Y | empty         ( First set: , ,; . t2 *" ? empty | empty ) ------------------------------------------------------------------------
+// Y -> H?Y | empty
 void codeGenY(node_t* yNode) {
     printf("codeGenY()\n");
 

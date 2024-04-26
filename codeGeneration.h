@@ -9,7 +9,6 @@
 #include "node.h"
 
 void codeGeneration(node_t*);
-void traversePreOrderCodeGen(node_t*, int);
 
 void codeGenS(node_t*);
 void codeGenA(node_t*);
