@@ -80,7 +80,7 @@ void codeGenB(node_t* bNode) {
 
     // Logic Goes here ...
     char* aNum = codeGenA(bNode->childThree);
-    fprintf(filePointer, "LOAD %s\nSTORE %s\n", aNum, bNode->childTwo->tokenInstance);
+    fprintf(filePointer, "STORE %s\n", bNode->childTwo->tokenInstance);
 
     printf("<- codeGenA(end)\n");
 }
