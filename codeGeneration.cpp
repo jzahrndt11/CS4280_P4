@@ -156,17 +156,19 @@ char* codeGenF(node_t* fNode) {
 
     // LOGIC goes Here ...
     if (fNode->childOne->tokenId == T2_Token) {
+        printf("<- codeGenF(end)\n");
         return fNode->childOne->tokenInstance;
     } else {
         if (isalpha(fNode->childOne->tokenInstance[0]) == 0) {
+            printf("<- codeGenF(end)\n");
             return fNode->childOne->tokenInstance - 1;
         } else {
-            char* strBuff;
+            char* strBuff = nullptr;
             sprintf(strBuff, "-%s", fNode->childOne->tokenInstance - 1);
+            printf("<- codeGenF(end)\n");
             return strBuff;
         }
     }
-    printf("<- codeGenF(end)\n");
 }
 
 /*
