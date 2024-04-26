@@ -42,22 +42,22 @@ void traversePreOrderCodeGen(node_t* root, int level) {
 
     // traverse left-most subtree (if needed)
     if (root->childOne != NULL) {
-        traversePreOrder(root->childOne, level + 1);
+        traversePreOrderCodeGen(root->childOne, level + 1);
     }
 
     // traverse next subtree (if needed)
     if (root->childTwo != NULL) {
-        traversePreOrder(root->childTwo, level + 1);
+        traversePreOrderCodeGen(root->childTwo, level + 1);
     }
 
     // traverse next subtree (if needed)
     if (root->childThree != NULL) {
-        traversePreOrder(root->childThree, level + 1);
+        traversePreOrderCodeGen(root->childThree, level + 1);
     }
 
     // traverse right-most subtree (if needed)
     if (root->childFour != NULL) {
-        traversePreOrder(root->childFour, level + 1);
+        traversePreOrderCodeGen(root->childFour, level + 1);
     }
 }
 
