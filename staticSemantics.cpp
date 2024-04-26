@@ -21,12 +21,13 @@ const char* tokenNames1[] = {
 
 bool isNewIdentifier = false;
 
+// initialize symbolTable
+for (int i=0; i<TABLE_SIZE; i++) {
+    memset(symbolTable[i], '\0', MAX_TOKEN_SIZE2);
+}
+
 // Test Tree function --------------------------------------------------------------------------------------------------
 void staticSem(node_t* tree) {
-    // initialize symbolTable
-    for (int i=0; i<TABLE_SIZE; i++) {
-        memset(symbolTable[i], '\0', MAX_TOKEN_SIZE2);
-    }
 
     printf("Traversing for Semantics:\n");
     traversePreOrder(tree, 0);
