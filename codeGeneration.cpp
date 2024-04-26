@@ -65,9 +65,6 @@ int codeGenA(node_t* aNode) {
     // A -> X -> ?$  ==  sum
     if (strcmp(aNode->childTwo->childTwo->tokenInstance, "?$") == 0) {
         int sum = 0;
-
-
-        codeGenF()
         sum = atoi(aNode->childOne->tokenInstance) + atoi(aNode->childTwo->childOne->tokenInstance);
         printf("codeGenA(): sum = %d", sum);
 
@@ -164,7 +161,7 @@ char* codeGenF(node_t* fNode) {
         if (isalpha(fNode->childOne->tokenInstance[0]) == 0) {
             return fNode->childOne->tokenInstance - 1;
         } else {
-            char strBuff*;
+            char* strBuff;
             sprintf(strBuff, "-%s", fNode->childOne->tokenInstance - 1);
             return strBuff;
         }
