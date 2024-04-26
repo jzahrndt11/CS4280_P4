@@ -8,11 +8,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <string.h>
 #include "codeGeneration.h"
 #include "parser.h"
 
 
-// Code Generation function --------------------------------------------------------------------------------------------------
+// Code Generation function ---------------------------------------------------------------
 void codeGeneration(node_t* tree) {
     char fileBuf[100];
     sprintf(fileBuf,"%s.asm", file);
@@ -33,96 +34,223 @@ void codeGeneration(node_t* tree) {
     }
 }
 
-// S -> CD      read an int and allocate memory, any number of additional operations ---------------------------------------------------------
+/*
+ *   S -> CD
+ *          - read an int and allocate memory, any number of additional operations
+ *          - childOne: C
+ *          - childTwo: D
+ */
 void codeGenS(node_t* sNode) {
-    printf("codeGenS()\n");
+    printf("-> codeGenS(start)\n");
 
     codeGenC(sNode->childOne);
     codeGenD(sNode->childTwo);
+
+    printf("<- codeGenS(end)\n");
 }
 
-// A -> FX      sum | int or identifier ------------------------------------------------------------------------------------------------------
-void codeGenA(node_t* aNode) {
-    printf("codeGenA()\n");
+/*
+ *   A -> FX
+ *          - sum | int or identifier
+ *          - childOne: F
+ *          - childTwo: X
+ *   X -> F?$ | .
+ *          - INFO ...
+ *          - childOne: F  |  .
+ *          - childTwo: ?$
+ */
+int codeGenA(node_t* aNode) {
+    printf("-> codeGenA(start)\n");
 
-    codeGenF(aNode->childOne);
-    codeGenX(aNode->childTwo);
+    // A -> X -> ?$  ==  sum
+    if (strcmp(aNode->childTwo->childTwo->tokenInstance, "?$") == 0) {
+        int sum = 0;
+
+        sum = atoi(aNode->childOne->tokenInstance) + atoi(aNode->childTwo->childOne->tokenInstance);
+        printf("codeGenA(): sum = %d", sum);
+
+        printf("<- codeGenA(end)\n");
+        return sum;
+    }
+    // A -> X -> . ==  int of identifier
+    else {
+        int num = 0;
+        num = atoi(aNode->childOne->tokenInstance);
+
+        printf("<- codeGenA(end)\n");
+        return num;
+    }
 }
 
-// B -> .t2A!      assign value of A to identifier t2 ----------------------------------------------------------------------------------------
+
+/*
+ *   B -> .t2A!
+ *          - assign value of A to identifier t2
+ *          - childOne: .
+ *          - childTwo: t2 Token
+ *          - childThree: A
+ *          - childFour: !
+ */
 void codeGenB(node_t* bNode) {
-    printf("codeGenB()\n");
+    printf("-> codeGenB(start)\n");
 
+    // Logic Goes here ...
+    char tempBuf[100];
+    int aNum = codeGenA(bNode->childThree);
+    sprintf(tempBuf, "%d", aNum);
 
-    // ...
+    fprintf(filePointer, "LOAD %s\nSTORE %s\n", tempBuf, bNode->childTwo->tokenInstance);
 
-
+    printf("<- codeGenA(end)\n");
 }
 
-// C -> t2*     read in int, allocate memory (ex: v10 for %10), assign value = int ------------------------------------------------------------
+/*
+ *   C -> t2*
+ *          - read in int, allocate memory (ex: v10 for %10), assign value = int
+ *          - childOne: t2 token
+ *          - childTwo: *
+ */
 void codeGenC(node_t* cNode) {
-    printf("codeGenC()\n");
+    printf("-> codeGenC(start)\n");
 
     fprintf(filePointer, "READ %s\n", cNode->childOne->tokenInstance);
+
+    printf("<- codeGenC(end)\n");
 }
 
-// D -> Y       originally: D -> H?D | empty for recursion ------------------------------------------------------------------------------------
+/*
+ *   D -> Y
+ *          - originally: D -> H?D | empty for recursion
+ *          - childOne: Y
+ */
 void codeGenD(node_t* dNode) {
-    printf("codeGenD()\n");
+    printf("-> codeGenD(start)\n");
 
     codeGenY(dNode->childOne);
+
+    printf("<- codeGenD(end)\n");
 }
 
-// E -> ,AAH | ,;FH     if first A > second A, do H   |    do H, F times  ---------------------------------------------------------------------
+/*
+ *   E -> ,AAH | ,;FH
+ *          - if first A > second A, do H   |    do H, F times
+ *          - childOne:  ,  |  ,;
+ *          - childTwo: A  |  F
+ *          - childThree: A  |  H
+ *          - childFour: H  |  empty
+ */
 void codeGenE(node_t* eNode) {
-    printf("codeGenE()\n");
+    printf("-> codeGenE(start)\n");
 
+    // Logic Here ...
+
+    printf("<- codeGenE(end)\n");
 }
 
-// F -> t1 | t2        number  |  identifier  -------------------------------------------------------------------------------------------------
+/*
+ *   F -> t1 | t2
+ *          - number  |  identifier
+ *          - childOne: t1 Token  |  t2 Token
+ */
 void codeGenF(node_t* fNode) {
-    printf("codeGenF()\n");
+    printf("-> codeGenF(start)\n");
 
-    // T1 Token
-    if (fNode->tokenId == T1_Token) {
-        if (isalpha(fNode->tokenInstance[0])) {
-            fprintf(filePointer, "LOAD %s\n", fNode->tokenInstance + 1);
-        } else {
-            fprintf(filePointer, "LOAD -%s\n", fNode->tokenInstance + 1);
-        }
-    }
-    // T2 Token
-    else {
-        fprintf(filePointer, "LOAD %s\n", fNode->tokenInstance);
-    }
+    // LOGIC goes Here ...
+
+    printf("<- codeGenF(end)\n");
 }
 
-// G -> B | C | J       assignment  |  read int and allocate memory  |  print value to screen  ------------------------------------------------
+/*
+ *   G -> B | C | J
+ *          - assignment  |  read int and allocate memory  |  print value to screen
+ *          - childOne: B  |  C  |  J
+ */
 void codeGenG(node_t* gNode) {
-    printf("codeGenG()\n");
+    printf("-> codeGenG(start)\n");
+
+    // Logic Here ...
+    if (gNode->childOne->label == 'B') {
+        codeGenB(gNode->childOne);
+    } else if (gNode->childOne->label == 'C') {
+        codeGenC(gNode->childOne);
+    } else {
+        codeGenJ(gNode->childOne);
+    }
+
+    printf("<- codeGenG(end)\n");
 }
 
-// H -> E? | G. | empty     if, for   |  assignment, read int and allocate memory  |  print value  --------------------------------------------
+/*
+ *   H -> E? | G. | empty
+ *          - if, for   |  assignment, read int and allocate memory  |  print value
+ *          - childOne: E  |  G  | empty
+ *          - childTwo: ?  |  .
+ */
 void codeGenH(node_t* hNode){
-    printf("codeGenH()\n");
+    printf("-> codeGenH(start)\n");
+
+    // Logic Here ...
+    if (strcmp(hNode->childOne->tokenInstance, "empty") == 0) {
+        printf("<- codeGenH(end)\n");
+        return;
+    }
+    else if (hNode->childOne->label == 'E') {
+        codeGenE(hNode->childOne);
+    } else {
+        codeGenG(hNode->childOne);
+    }
+
+    printf("<- codeGenH(end)\n");
 }
 
-// J -> *"A.        print integer value to screen (sum, int, or identifier) -------------------------------------------------------------------
+/*
+ *   J -> *"A.
+ *          - print integer value to screen (sum, int, or identifier)
+ *          - childOne: *"
+ *          - childTwo: A
+ *          - childThree: .
+ */
 void codeGenJ(node_t* jNode) {
-    printf("codeGenJ()\n");
-    fprintf(filePointer, "WRITE ");
+    printf("-> codeGenJ(start)\n");
+
+    // Logic Here ...
+
+    printf("<- codeGenJ(end)\n");
 }
 
-// X -> F?$ | .
+/*
+ *   X -> F?$ | .
+ *          - INFO ...
+ *          - childOne: F  |  .
+ *          - childTwo: ?$
+ */
 void codeGenX(node_t* xNode) {
-    printf("codeGenX()\n");
+    printf("-> codeGenX(start)\n");
 
+    // Logic Here ...
+
+
+    printf("<- codeGenX(end)\n");
 }
 
-// Y -> H?Y | empty
+/*
+ *   Y -> H?Y | empty
+ *          - INFO ...
+ *          - childOne = H  |  empty
+ *          - childTwo = ?
+ *          - childThree = Y
+ */
 void codeGenY(node_t* yNode) {
-    printf("codeGenY()\n");
+    printf("codeGenY(start)\n");
 
+    if (strcmp(yNode->childOne->tokenInstance, "empty") == 0) {
+        return;
+    } else {
+        codeGenH(yNode->childOne);
+        codeGenY(yNode->childThree);
+    }
+
+    printf("<- codeGenY(end)\n");
 }
 
 

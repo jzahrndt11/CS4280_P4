@@ -11,7 +11,7 @@
 void codeGeneration(node_t*);
 
 void codeGenS(node_t*);
-void codeGenA(node_t*);
+int codeGenA(node_t*);
 void codeGenB(node_t*);
 void codeGenC(node_t*);
 void codeGenD(node_t*);
