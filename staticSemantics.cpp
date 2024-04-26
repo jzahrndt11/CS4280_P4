@@ -19,7 +19,6 @@ const char* tokenNames1[] = {
         "Unknown"
 };
 
-char symbolTable[TABLE_SIZE][MAX_TOKEN_SIZE2];
 bool isNewIdentifier = false;
 
 // Test Tree function --------------------------------------------------------------------------------------------------
