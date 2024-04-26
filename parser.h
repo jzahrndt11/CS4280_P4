@@ -11,7 +11,7 @@
 
 extern char nextChar;
 extern FILE* filePointer;
-
+extern char* file;
 
 extern char symbolTable[100][MAX_TOKEN_SIZE2];
 

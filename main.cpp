@@ -10,11 +10,11 @@
 #include "codeGeneration.h"
 
 FILE* filePointer = nullptr;
+char* file;
 
 // main function -------------------------------------------------------------------------------------------------------------------
 int main(int argc, char* argv[]) {
     node_t* tree = NULL;
-    char* file;
     int character;
     bool outputFileCreated = false;
 

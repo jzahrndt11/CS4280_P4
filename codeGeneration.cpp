@@ -10,16 +10,21 @@
 #include "codeGeneration.h"
 #include "parser.h"
 
+
+
 // Code Generation function --------------------------------------------------------------------------------------------------
 void codeGeneration(node_t* tree) {
+    char fileBuf[100];
+    sprintf(fileBuf,"%s.asm", file);
+    filePointer = fopen(fileBuf, w);
 
     traversePreOrderCodeGen(tree, 0);
 
     // Add STOP and symbolTable to codeGenerationFile
-    printf("STOP\n");
+    fprintf(filePointer, "STOP\n");
     for (int i = 0; i < 100; i++) {
         if (symbolTable[i][0] != '\0') {
-            printf("%s 0\n", symbolTable[i]);
+            fprintf(filePointer, "%s 0\n", symbolTable[i]);
         }
     }
 }
@@ -127,7 +132,7 @@ void codeGenB(node_t* bNode) {
 // C -> t2*     read in int, allocate memory (ex: v10 for %10), assign value = int ----------------------------------
 void codeGenC(node_t* cNode) {
     //printf("codeGenC()\n");
-    printf("READ %s\n", cNode->tokenInstance);
+    fprintf(filePointer, "READ %s\n", cNode->tokenInstance);
 }
 
 // D -> Y           ( First set: , ,; . t2 *" ? empty )
