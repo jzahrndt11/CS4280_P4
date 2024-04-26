@@ -156,7 +156,7 @@ char* codeGenF(node_t* fNode) {
     printf("-> codeGenF(start)\n");
 
     // LOGIC goes Here ...
-    char* strBuff;
+    char* strBuf;
     if (fNode->childOne->tokenId == T2_Token) {
         printf("<- codeGenF(end)\n");
         return strdup(fNode->childOne->tokenInstance);
@@ -165,10 +165,10 @@ char* codeGenF(node_t* fNode) {
             printf("<- codeGenF(end)\n");
             return strdup(fNode->childOne->tokenInstance - 1);
         } else {
-            strBuff = malloc(strlen(fNode->childOne->tokenInstance) + 2);
-            sprintf(strBuff, "-%s", fNode->childOne->tokenInstance - 1);
+            strBuf = (char*) malloc(strlen(fNode->childOne->tokenInstance) + 2);
+            sprintf(strBuf, "-%s", fNode->childOne->tokenInstance - 1);
             printf("<- codeGenF(end)\n");
-            return strBuff;
+            return strBuf;
         }
     }
 }
@@ -245,7 +245,7 @@ char* codeGenX(node_t* xNode, char* fNum1) {
         char* fNum2 = codeGenF(xNode->childOne);
         int sum = atoi(fNum1) + atoi(fNum2);
 
-        char* strBuf = malloc(sizeof(char) * 20);
+        char* strBuf = (char*) malloc(sizeof(char) * 20);
         sprintf(strBuf, "%d", sum);
 
         printf("<- codeGenX(end)\n");
