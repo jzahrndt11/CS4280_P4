@@ -104,6 +104,7 @@ void insert(node_t* identifier) {
         }
         else {
             //printf("Inserting %s into symbol table\n", identifier->tokenInstance);
+            //identifier->tokenInstance[0] = 'v';
             strcpy(symbolTable[i], identifier->tokenInstance);
             break;
         }
