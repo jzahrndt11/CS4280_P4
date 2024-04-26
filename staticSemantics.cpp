@@ -1,7 +1,7 @@
 /*
  *  CS4280 - Project P2
  *      - by. Jeremy Zahrndt
- *      - testTree.cpp
+ *      - staticSemantics.cpp
  *      Resources:
  *      - https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/
  */
@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "staticSemantics.h"
+#include "parser.h"
 
 const char* tokenNames1[] = {
         "EOF Token",
@@ -18,7 +19,7 @@ const char* tokenNames1[] = {
         "Unknown"
 };
 
-const int TABLE_SIZE = 5;
+//const int TABLE_SIZE = 100;
 char symbolTable[TABLE_SIZE][MAX_TOKEN_SIZE2];
 bool isNewIdentifier = false;
 

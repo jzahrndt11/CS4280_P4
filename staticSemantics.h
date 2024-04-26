@@ -1,7 +1,7 @@
 /*
  *  CS4280 - Project P2
  *      - by. Jeremy Zahrndt
- *      - testTree.h
+ *      - staticSemantics.h
  */
 #ifndef STATICSEMANTICS_H
 #define STATICSEMANTICS_H
