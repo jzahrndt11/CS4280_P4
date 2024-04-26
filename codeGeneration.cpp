@@ -62,24 +62,26 @@ void codeGenS(node_t* sNode) {
 int codeGenA(node_t* aNode) {
     printf("-> codeGenA(start)\n");
 
-    // A -> X -> ?$  ==  sum
-    if (strcmp(aNode->childTwo->childTwo->tokenInstance, "?$") == 0) {
-        int sum = 0;
-
-        sum = atoi(aNode->childOne->tokenInstance) + atoi(aNode->childTwo->childOne->tokenInstance);
-        printf("codeGenA(): sum = %d", sum);
-
-        printf("<- codeGenA(end)\n");
-        return sum;
-    }
-    // A -> X -> . ==  int of identifier
-    else {
-        int num = 0;
-        num = atoi(aNode->childOne->tokenInstance);
-
-        printf("<- codeGenA(end)\n");
-        return num;
-    }
+//    // A -> X -> ?$  ==  sum
+//    if (strcmp(aNode->childTwo->childTwo->tokenInstance, "?$") == 0) {
+//        int sum = 0;
+//
+//
+//        codeGenF()
+//        sum = atoi(aNode->childOne->tokenInstance) + atoi(aNode->childTwo->childOne->tokenInstance);
+//        printf("codeGenA(): sum = %d", sum);
+//
+//        printf("<- codeGenA(end)\n");
+//        return sum;
+//    }
+//    // A -> X -> . ==  int of identifier
+//    else {
+//        int num = 0;
+//        num = atoi(aNode->childOne->tokenInstance);
+//
+//        printf("<- codeGenA(end)\n");
+//        return num;
+//    }
 }
 
 
@@ -152,11 +154,21 @@ void codeGenE(node_t* eNode) {
  *          - number  |  identifier
  *          - childOne: t1 Token  |  t2 Token
  */
-void codeGenF(node_t* fNode) {
+char* codeGenF(node_t* fNode) {
     printf("-> codeGenF(start)\n");
 
     // LOGIC goes Here ...
-
+    if (fNode->childOne->tokenId == T2_Token) {
+        return fNode->childOne->tokenInstance;
+    } else {
+        if (isalpha(fNode->childOne->tokenInstance[0]) == 0) {
+            return fNode->childOne->tokenInstance - 1;
+        } else {
+            char strBuff*;
+            sprintf(strBuff, "-%s", fNode->childOne->tokenInstance - 1);
+            return strBuff;
+        }
+    }
     printf("<- codeGenF(end)\n");
 }
 
@@ -190,7 +202,7 @@ void codeGenH(node_t* hNode){
     printf("-> codeGenH(start)\n");
 
     // Logic Here ...
-    if (strcmp(hNode->childOne->tokenInstance, "empty") == 0) {
+    if (strcmp(hNode->childOne->tokenInstance, "Empty") == 0) {
         printf("<- codeGenH(end)\n");
         return;
     }
@@ -241,9 +253,9 @@ void codeGenX(node_t* xNode) {
  *          - childThree = Y
  */
 void codeGenY(node_t* yNode) {
-    printf("codeGenY(start)\n");
+    printf("-> codeGenY(start)\n");
 
-    if (strcmp(yNode->childOne->tokenInstance, "empty") == 0) {
+    if (strcmp(yNode->childOne->tokenInstance, "Empty") == 0) {
         return;
     } else {
         codeGenH(yNode->childOne);
