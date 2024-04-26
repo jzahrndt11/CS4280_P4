@@ -16,7 +16,7 @@
 void codeGeneration(node_t* tree) {
     char fileBuf[100];
     sprintf(fileBuf,"%s.asm", file);
-    filePointer = fopen(fileBuf, w);
+    filePointer = fopen(fileBuf, "w");
 
     traversePreOrderCodeGen(tree, 0);
 
