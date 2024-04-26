@@ -62,26 +62,26 @@ void codeGenS(node_t* sNode) {
 int codeGenA(node_t* aNode) {
     printf("-> codeGenA(start)\n");
 
-//    // A -> X -> ?$  ==  sum
-//    if (strcmp(aNode->childTwo->childTwo->tokenInstance, "?$") == 0) {
-//        int sum = 0;
-//
-//
-//        codeGenF()
-//        sum = atoi(aNode->childOne->tokenInstance) + atoi(aNode->childTwo->childOne->tokenInstance);
-//        printf("codeGenA(): sum = %d", sum);
-//
-//        printf("<- codeGenA(end)\n");
-//        return sum;
-//    }
-//    // A -> X -> . ==  int of identifier
-//    else {
-//        int num = 0;
-//        num = atoi(aNode->childOne->tokenInstance);
-//
-//        printf("<- codeGenA(end)\n");
-//        return num;
-//    }
+    // A -> X -> ?$  ==  sum
+    if (strcmp(aNode->childTwo->childTwo->tokenInstance, "?$") == 0) {
+        int sum = 0;
+
+
+        codeGenF()
+        sum = atoi(aNode->childOne->tokenInstance) + atoi(aNode->childTwo->childOne->tokenInstance);
+        printf("codeGenA(): sum = %d", sum);
+
+        printf("<- codeGenA(end)\n");
+        return sum;
+    }
+    // A -> X -> . ==  int of identifier
+    else {
+        int num = 0;
+        num = atoi(aNode->childOne->tokenInstance);
+
+        printf("<- codeGenA(end)\n");
+        return num;
+    }
 }
 
 
