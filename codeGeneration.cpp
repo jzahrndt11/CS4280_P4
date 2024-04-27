@@ -14,7 +14,7 @@
 int tempVarCount = 0;
 char tempVarTable[100][MAX_TOKEN_SIZE2];
 
-int outlabelCount = 1;
+int outLabelCount = 1;
 int repeatLabelCount = 1;
 
 // Code Generation function  -------------------------------------------------------------------------------------------
@@ -121,11 +121,11 @@ void codeGenE(node_t* eNode) {
         char* aNum2 = codeGenA(eNode->childThree);
 
         // if first A > second A, do H
-        fprintf(filePointer, "LOAD %s\nSUB %s\nBRZNEG OUT%d\n", aNum1, aNum2, outlabelCount);
+        fprintf(filePointer, "LOAD %s\nSUB %s\nBRZNEG OUT%d\n", aNum1, aNum2, outLabelCount);
         codeGenH(eNode->childFour);
-        fprintf(filePointer, "OUT%d: NOOP\n", outlabelCount);
+        fprintf(filePointer, "OUT%d: NOOP\n", outLabelCount);
 
-        outlabelCount++;
+        outLabelCount++;
     } else if (eNode->childTwo->label == 'F') {
         char* fNum = codeGenF(eNode->childTwo);
 
@@ -133,12 +133,12 @@ void codeGenE(node_t* eNode) {
         fprintf(filePointer, "LOAD %s\nSTORE %s\n", fNum, tempVarBuf);
 
         // do H, F times
-        fprintf(filePointer, "LOAD %s\nREPEAT%d: STORE %s\nBRZNEG OUT%d\n", tempVarBuf, repeatLabelCount, tempVarBuf, outlabelCount);
+        fprintf(filePointer, "LOAD %s\nREPEAT%d: STORE %s\nBRZNEG OUT%d\n", tempVarBuf, repeatLabelCount, tempVarBuf, outLabelCount);
         codeGenH(eNode->childThree);
-        fprintf(filePointer, "LOAD %s\nSUB 1\nBR REPEAT%d\nOUT%d: NOOP\n", tempVarBuf, repeatLabelCount, outlabelCount);
+        fprintf(filePointer, "LOAD %s\nSUB 1\nBR REPEAT%d\nOUT%d: NOOP\n", tempVarBuf, repeatLabelCount, outLabelCount);
 
         repeatLabelCount++;
-        outlabelCount++;
+        outLabelCount++;
     } else
         printf("codeGeneration.cpp: ERROR in codeGenE()");
 }
