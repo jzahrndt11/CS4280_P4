@@ -152,7 +152,7 @@ char* codeGenF(node_t* fNode) {
         printf("<- codeGenF(end)\n");
         return strdup(fNode->childOne->tokenInstance);
     } else {
-        if (isalpha(fNode->childOne->tokenInstance[0]) == 0) {
+        if (fNode->childOne->tokenInstance[0] >= 'A' && fNode->childOne->tokenInstance[0] <= 'Z') {
             printf("<- codeGenF(end)\n");
             return strdup(fNode->childOne->tokenInstance + 1);
         } else {
@@ -237,9 +237,6 @@ char* codeGenX(node_t* xNode, char* fNum1) {
     // Logic Here ...
     if (xNode->childOne->label == 'F') {
         char* fNum2 = codeGenF(xNode->childOne);
-//        int sum = atoi(fNum1) + atoi(fNum2);
-//        char* strBuf = (char*) malloc(sizeof(char) * 20);
-//        sprintf(strBuf, "%d", sum);
 
         char* tempVarBuf = newTemp();
         fprintf(filePointer, "LOAD %s\nADD %s\nSTORE %s\n", fNum1, fNum2, tempVarBuf);
