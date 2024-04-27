@@ -43,7 +43,7 @@ void codeGeneration(node_t* tree) {
         }
     }
 
-    printf("COMPILATION COMPLETE: ASSEMBLY LANGUAGE FILE { %s } CREATED\n", fileBuf);
+    printf("\nCOMPILATION COMPLETE:\n\tASSEMBLY LANGUAGE FILE { %s } CREATED\n\n", fileBuf);
 }
 
 /*  --------------------------------------------------------------------------------------------------------------------
