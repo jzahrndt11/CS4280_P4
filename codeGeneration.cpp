@@ -112,12 +112,9 @@ void codeGenD(node_t* dNode) {
  *          - childOne:  ,  |  ,;
  *          - childTwo: A  |  F
  *          - childThree: A  |  H
- *          - childFour: H  |  empty
+ *          - childFour: H
  *  ------------------------------------------------------------------------------------------------------------------*/
 void codeGenE(node_t* eNode) {
-    printf("-> codeGenE(start)\n");
-
-    // Logic Here ...
     if (eNode->childTwo->label == 'A') {
         char* aNum1 = codeGenA(eNode->childTwo);
         char* aNum2 = codeGenA(eNode->childThree);
@@ -129,11 +126,19 @@ void codeGenE(node_t* eNode) {
 
         labelCount++;
     } else if (eNode->childTwo->label == 'F') {
+        char* fNum = codeGenF(eNode->childTwo);
 
+        char* tempVarBuf = newTemp();
+        fprintf(filePointer, "LOAD %s\nSTORE %s\n", fNum, tempVarBuf);
+
+        // do H, F times
+        fprintf(filePointer, "LOAD %s\nRepeat%d: STORE %s\nBRZNEG OUT%d\n", tempVarBuf, labelCount, tempVarBuf, labelCount + 1);
+        codeGenH(eNode->childThree);
+        fprintf(filePointer, "SUB 1\nBR Repeat%d\nOUT%d: NOOP\n", labelCount, labelCount + 1);
+
+        labelCount = labelCount + 2;
     } else
         printf("codeGeneration.cpp: ERROR in codeGenE()");
-
-    printf("<- codeGenE(end)\n");
 }
 
 /*  --------------------------------------------------------------------------------------------------------------------
