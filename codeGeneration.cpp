@@ -278,10 +278,10 @@ void codeGenY(node_t* yNode) {
 char* newTemp() {
     char* temp = (char*) malloc(sizeof(char) * 10);
     sprintf(temp, "T%d", tempVarCount++);
-    fprintf(filePointer, "VAR %s\n", temp);  // Assuming VAR is used to declare variables
     for (int i = 0; i < 100; i++) {
         if (tempVarTable[i][0] == '\0') {
             strcpy(tempVarTable[i], temp);
+            break;
         }
     }
     return temp;
