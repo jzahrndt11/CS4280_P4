@@ -122,12 +122,12 @@ void codeGenE(node_t* eNode) {
         char* aNum1 = codeGenA(eNode->childTwo);
         char* aNum2 = codeGenA(eNode->childThree);
 
+        // if first A > second A, do H
         fprintf(filePointer, "LOAD %s\nSUB %s\nBRZNEG OUT%d\n", aNum1, aNum2, labelCount);
-        labelCount++;
-
         codeGenH(eNode->childFour);
+        fprintf(filePointer, "OUT%d: NOOP\n", labelCount);
 
-        fprintf(filePointer, "OUT: NOOP\n");
+        labelCount++;
     } else if (eNode->childTwo->label == 'F') {
 
     } else
