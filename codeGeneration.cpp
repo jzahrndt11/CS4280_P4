@@ -7,7 +7,6 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
 #include <string.h>
 #include "codeGeneration.h"
 #include "parser.h"
@@ -52,12 +51,8 @@ void codeGeneration(node_t* tree) {
  *          - childTwo: D
  *  ------------------------------------------------------------------------------------------------------------------*/
 void codeGenS(node_t* sNode) {
-    printf("-> codeGenS(start)\n");
-
     codeGenC(sNode->childOne);
     codeGenD(sNode->childTwo);
-
-    printf("<- codeGenS(end)\n");
 }
 
 /*  --------------------------------------------------------------------------------------------------------------------
@@ -67,12 +62,9 @@ void codeGenS(node_t* sNode) {
  *          - childTwo: X
  *  ------------------------------------------------------------------------------------------------------------------*/
 char* codeGenA(node_t* aNode) {
-    printf("-> codeGenA(start)\n");
-
     char* num = codeGenF(aNode->childOne);
     char* returnNum = codeGenX(aNode->childTwo, num);
 
-    printf("<- codeGenA(end)\n");
     return returnNum;
 }
 
@@ -86,13 +78,9 @@ char* codeGenA(node_t* aNode) {
  *          - childFour: !
  *  ------------------------------------------------------------------------------------------------------------------*/
 void codeGenB(node_t* bNode) {
-    printf("-> codeGenB(start)\n");
-
-    // Logic Goes here ...
+    // May be able to remove LOAD for optimization
     char* aVar = codeGenA(bNode->childThree);
     fprintf(filePointer, "LOAD %s\nSTORE %s\n", aVar , bNode->childTwo->tokenInstance);
-
-    printf("<- codeGenA(end)\n");
 }
 
 /*  --------------------------------------------------------------------------------------------------------------------
@@ -102,11 +90,7 @@ void codeGenB(node_t* bNode) {
  *          - childTwo: *
  *  ------------------------------------------------------------------------------------------------------------------*/
 void codeGenC(node_t* cNode) {
-    printf("-> codeGenC(start)\n");
-
     fprintf(filePointer, "READ %s\n", cNode->childOne->tokenInstance);
-
-    printf("<- codeGenC(end)\n");
 }
 
 /*  --------------------------------------------------------------------------------------------------------------------
@@ -115,11 +99,7 @@ void codeGenC(node_t* cNode) {
  *          - childOne: Y
  *  ------------------------------------------------------------------------------------------------------------------*/
 void codeGenD(node_t* dNode) {
-    printf("-> codeGenD(start)\n");
-
     codeGenY(dNode->childOne);
-
-    printf("<- codeGenD(end)\n");
 }
 
 /*  --------------------------------------------------------------------------------------------------------------------
@@ -144,21 +124,15 @@ void codeGenE(node_t* eNode) {
  *          - childOne: t1 Token  |  t2 Token
  *  ------------------------------------------------------------------------------------------------------------------*/
 char* codeGenF(node_t* fNode) {
-    printf("-> codeGenF(start)\n");
-
-    // LOGIC goes Here ...
     char* strBuf;
     if (fNode->childOne->tokenId == T2_Token) {
-        printf("<- codeGenF(end)\n");
         return strdup(fNode->childOne->tokenInstance);
     } else {
         if (fNode->childOne->tokenInstance[0] >= 'A' && fNode->childOne->tokenInstance[0] <= 'Z') {
-            printf("<- codeGenF(end)\n");
             return strdup(fNode->childOne->tokenInstance + 1);
         } else {
             strBuf = (char*) malloc(strlen(fNode->childOne->tokenInstance));
             sprintf(strBuf, "-%s", fNode->childOne->tokenInstance + 1);
-            printf("<- codeGenF(end)\n");
             return strBuf;
         }
     }
@@ -170,9 +144,6 @@ char* codeGenF(node_t* fNode) {
  *          - childOne: B  |  C  |  J
  *  ------------------------------------------------------------------------------------------------------------------*/
 void codeGenG(node_t* gNode) {
-    printf("-> codeGenG(start)\n");
-
-    // Logic Here ...
     if (gNode->childOne->label == 'B') {
         codeGenB(gNode->childOne);
     } else if (gNode->childOne->label == 'C') {
@@ -180,8 +151,6 @@ void codeGenG(node_t* gNode) {
     } else {
         codeGenJ(gNode->childOne);
     }
-
-    printf("<- codeGenG(end)\n");
 }
 
 /*  --------------------------------------------------------------------------------------------------------------------
@@ -191,11 +160,7 @@ void codeGenG(node_t* gNode) {
  *          - childTwo: ?  |  .
  *  ------------------------------------------------------------------------------------------------------------------*/
 void codeGenH(node_t* hNode){
-    printf("-> codeGenH(start)\n");
-
-    // Logic Here ...
     if (strcmp(hNode->childOne->tokenInstance, "Empty") == 0) {
-        printf("<- codeGenH(end)\n");
         return;
     }
     else if (hNode->childOne->label == 'E') {
@@ -203,8 +168,6 @@ void codeGenH(node_t* hNode){
     } else {
         codeGenG(hNode->childOne);
     }
-
-    printf("<- codeGenH(end)\n");
 }
 
 /*  --------------------------------------------------------------------------------------------------------------------
@@ -215,14 +178,8 @@ void codeGenH(node_t* hNode){
  *          - childThree: .
  *  ------------------------------------------------------------------------------------------------------------------*/
 void codeGenJ(node_t* jNode) {
-    printf("-> codeGenJ(start)\n");
-
     char* aNum = codeGenA(jNode->childTwo);
-
-    // Logic Here ...
     fprintf(filePointer, "WRITE %s\n", aNum);
-
-    printf("<- codeGenJ(end)\n");
 }
 
 /*  --------------------------------------------------------------------------------------------------------------------
@@ -232,22 +189,17 @@ void codeGenJ(node_t* jNode) {
  *          - childTwo: ?$
  *  ------------------------------------------------------------------------------------------------------------------*/
 char* codeGenX(node_t* xNode, char* fNum1) {
-    printf("-> codeGenX(start)\n");
-
-    // Logic Here ...
     if (xNode->childOne->label == 'F') {
         char* fNum2 = codeGenF(xNode->childOne);
 
         char* tempVarBuf = newTemp();
         fprintf(filePointer, "LOAD %s\nADD %s\nSTORE %s\n", fNum1, fNum2, tempVarBuf);
 
-        printf("<- codeGenX(end)\n");
         return tempVarBuf;
     } else {
         char* tempVarBuf = newTemp();
         fprintf(filePointer, "LOAD %s\nSTORE %s\n", fNum1, tempVarBuf);
 
-        printf("<- codeGenX(end)\n");
         return tempVarBuf;
     }
 }
@@ -260,18 +212,15 @@ char* codeGenX(node_t* xNode, char* fNum1) {
  *          - childThree = Y
  *  ------------------------------------------------------------------------------------------------------------------*/
 void codeGenY(node_t* yNode) {
-    printf("-> codeGenY(start)\n");
-
     if (strcmp(yNode->childOne->tokenInstance, "Empty") == 0) {
         return;
     } else {
         codeGenH(yNode->childOne);
         codeGenY(yNode->childThree);
     }
-
-    printf("<- codeGenY(end)\n");
 }
 
+// Function to add temp variable (allocate memory and add to TempTable for initialization) -----------------------------
 char* newTemp() {
     char* temp = (char*) malloc(sizeof(char) * 10);
     sprintf(temp, "T%d", tempVarCount++);
