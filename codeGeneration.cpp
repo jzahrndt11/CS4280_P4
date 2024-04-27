@@ -13,6 +13,7 @@
 #include "parser.h"
 
 int tempVarCount = 0;
+char tempVarTable[100][MAX_TOKEN_SIZE2];
 
 // Code Generation function  -------------------------------------------------------------------------------------------
 void codeGeneration(node_t* tree) {
@@ -26,11 +27,20 @@ void codeGeneration(node_t* tree) {
         printf("codeGeneration.cpp: ERROR running codeGenS() - label was not S");
     }
 
-    // Add STOP and symbolTable to codeGenerationFile
+    // Add STOP
     fprintf(filePointer, "STOP\n");
+
+    // Add Symbol Table Variables initialized to 0
     for (int i = 0; i < 100; i++) {
         if (symbolTable[i][0] != '\0') {
             fprintf(filePointer, "%s 0\n", symbolTable[i]);
+        }
+    }
+
+    // Add Temp Variables initialized to 0
+    for (int i = 0; i < 100; i++) {
+        if (tempVarTable[i][0] != '\0') {
+            fprintf(filePointer, "%s 0\n", tempVarTable[i]);
         }
     }
 }
@@ -79,7 +89,8 @@ void codeGenB(node_t* bNode) {
     printf("-> codeGenB(start)\n");
 
     // Logic Goes here ...
-    fprintf(filePointer, "STORE %s\n", bNode->childTwo->tokenInstance);
+    char* aVar = codeGenA(bNode->childThree);
+    fprintf(filePointer, "LOAD %s\nSTORE %s\n", aVar , bNode->childTwo->tokenInstance);
 
     printf("<- codeGenA(end)\n");
 }
@@ -222,28 +233,25 @@ void codeGenJ(node_t* jNode) {
  *  ------------------------------------------------------------------------------------------------------------------*/
 char* codeGenX(node_t* xNode, char* fNum1) {
     printf("-> codeGenX(start)\n");
-    char* tempVarBuf = (char*) malloc(sizeof(char) * 6);
 
     // Logic Here ...
     if (xNode->childOne->label == 'F') {
         char* fNum2 = codeGenF(xNode->childOne);
-        int sum = atoi(fNum1) + atoi(fNum2);
-        char* strBuf = (char*) malloc(sizeof(char) * 20);
-        sprintf(strBuf, "%d", sum);
+//        int sum = atoi(fNum1) + atoi(fNum2);
+//        char* strBuf = (char*) malloc(sizeof(char) * 20);
+//        sprintf(strBuf, "%d", sum);
 
-        sprintf(tempVarBuf, "t%d", tempVarCount);
-        tempVarCount++;
+        char* tempVarBuf = newTemp();
         fprintf(filePointer, "LOAD %s\nADD %s\nSTORE %s\n", fNum1, fNum2, tempVarBuf);
 
         printf("<- codeGenX(end)\n");
-        return strBuf;
+        return tempVarBuf;
     } else {
-        sprintf(tempVarBuf, "t%d", tempVarCount);
-        tempVarCount++;
+        char* tempVarBuf = newTemp();
         fprintf(filePointer, "LOAD %s\nSTORE %s\n", fNum1, tempVarBuf);
 
         printf("<- codeGenX(end)\n");
-        return fNum1;
+        return tempVarBuf;
     }
 }
 
@@ -265,6 +273,18 @@ void codeGenY(node_t* yNode) {
     }
 
     printf("<- codeGenY(end)\n");
+}
+
+char* newTemp() {
+    char* temp = (char*) malloc(sizeof(char) * 10);
+    sprintf(temp, "T%d", tempVarCount++);
+    fprintf(filePointer, "VAR %s\n", temp);  // Assuming VAR is used to declare variables
+    for (int i = 0; i < 100; i++) {
+        if (tempVarTable[i][0] == '\0') {
+            strcpy(tempVarTable[i], temp);
+        }
+    }
+    return temp;
 }
 
 

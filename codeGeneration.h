@@ -22,5 +22,6 @@ void codeGenH(node_t*);
 void codeGenJ(node_t*);
 char* codeGenX(node_t*, char*);
 void codeGenY(node_t*);
+char* newTemp();
 
 #endif
