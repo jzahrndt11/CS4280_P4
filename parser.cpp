@@ -266,8 +266,8 @@ node_t* E() {
             p->childOne = eTokenPtr;
         tokenInfo = scanner();  // consume ,;
 
-        p->childOne = F();    // run non-terminal F
-        p->childTwo = H();    // run non-terminal H
+        p->childTwo = F();    // run non-terminal F
+        p->childThree = H();    // run non-terminal H
 
         //printf("End of E()\n");
         return p;
