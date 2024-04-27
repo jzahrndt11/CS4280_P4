@@ -135,7 +135,7 @@ void codeGenE(node_t* eNode) {
         // do H, F times
         fprintf(filePointer, "LOAD %s\nREPEAT%d: STORE %s\nBRZNEG OUT%d\n", tempVarBuf, repeatLabelCount, tempVarBuf, outlabelCount);
         codeGenH(eNode->childThree);
-        fprintf(filePointer, "SUB 1\nBR REPEAT%d\nOUT%d: NOOP\n", repeatLabelCount, outlabelCount);
+        fprintf(filePointer, "LOAD %s\nSUB 1\nBR REPEAT%d\nOUT%d: NOOP\n", tempVarBuf, repeatLabelCount, outlabelCount);
 
         repeatLabelCount++;
         outlabelCount++;
