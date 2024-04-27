@@ -14,6 +14,8 @@
 int tempVarCount = 0;
 char tempVarTable[100][MAX_TOKEN_SIZE2];
 
+int labelCount = 0;
+
 // Code Generation function  -------------------------------------------------------------------------------------------
 void codeGeneration(node_t* tree) {
     char fileBuf[100];
@@ -116,6 +118,20 @@ void codeGenE(node_t* eNode) {
     printf("-> codeGenE(start)\n");
 
     // Logic Here ...
+    if (eNode->childTwo->label == 'A') {
+        char* aNum1 = codeGenA(eNode->childTwo);
+        char* aNum2 = codeGenA(eNode->childThree);
+
+        fprintf(filePointer, "LOAD %s\nSUB %s\nBRZNEG OUT%d\n", aNum1, aNum2, labelCount);
+        labelCount++;
+
+        codeGenH(eNode->childFour);
+
+        fprintf(filePointer, "OUT: NOOP\n");
+    } else if (eNode->childTwo->label == 'F') {
+
+    } else
+        printf("codeGeneration.cpp: ERROR in codeGenE()");
 
     printf("<- codeGenE(end)\n");
 }
