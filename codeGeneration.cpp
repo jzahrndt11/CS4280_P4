@@ -152,7 +152,7 @@ char* codeGenF(node_t* fNode) {
     char* strBuf;
     if (fNode->childOne->tokenId == T2_Token) {
         return strdup(fNode->childOne->tokenInstance);
-    } else {
+    } else if (fNode->childOne->tokenId == T1_Token) {
         if (fNode->childOne->tokenInstance[0] >= 'A' && fNode->childOne->tokenInstance[0] <= 'Z') {
             return strdup(fNode->childOne->tokenInstance + 1);
         } else {
@@ -160,6 +160,9 @@ char* codeGenF(node_t* fNode) {
             sprintf(strBuf, "-%s", fNode->childOne->tokenInstance + 1);
             return strBuf;
         }
+    } else {
+        printf("codeGeneration.cpp: ERROR in codeGenE()");
+        exit(EXIT_FAILURE);
     }
 }
 
@@ -173,9 +176,10 @@ void codeGenG(node_t* gNode) {
         codeGenB(gNode->childOne);
     } else if (gNode->childOne->label == 'C') {
         codeGenC(gNode->childOne);
-    } else {
+    } else if (gNode->childOne->label == 'J') {
         codeGenJ(gNode->childOne);
-    }
+    } else
+        printf("codeGeneration.cpp: ERROR in codeGenG(gNode)");
 }
 
 /*  --------------------------------------------------------------------------------------------------------------------
@@ -187,12 +191,12 @@ void codeGenG(node_t* gNode) {
 void codeGenH(node_t* hNode){
     if (strcmp(hNode->childOne->tokenInstance, "Empty") == 0) {
         return;
-    }
-    else if (hNode->childOne->label == 'E') {
+    } else if (hNode->childOne->label == 'E') {
         codeGenE(hNode->childOne);
-    } else {
+    } else if (hNode->childOne->label == 'G') {
         codeGenG(hNode->childOne);
-    }
+    } else
+        printf("codeGeneration.cpp: ERROR in codeGenH(hNode)");
 }
 
 /*  --------------------------------------------------------------------------------------------------------------------
