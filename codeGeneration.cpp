@@ -43,7 +43,7 @@ void codeGeneration(node_t* tree) {
         }
     }
 
-    printf("\n---> COMPILATION COMPLETE <---\n  Assembly Language File: %s\n---> CREATED <---\n\n", fileBuf);
+    printf("\n---> COMPILATION COMPLETE <---\n  Assembly Language File: %s\n----------> CREATED <------------\n\n", fileBuf);
 }
 
 /*  --------------------------------------------------------------------------------------------------------------------
