@@ -125,7 +125,7 @@ void codeGenE(node_t* eNode) {
         fprintf(filePointer, "OUT%d: NOOP\n", labelCount);
 
         labelCount++;
-    } else if (eNode->childTwo->label == 'F') {
+    } else {
         char* fNum = codeGenF(eNode->childTwo);
 
         char* tempVarBuf = newTemp();
@@ -137,8 +137,7 @@ void codeGenE(node_t* eNode) {
         fprintf(filePointer, "SUB 1\nBR Repeat%d\nOUT%d: NOOP\n", labelCount, labelCount + 1);
 
         labelCount = labelCount + 2;
-    } else
-        printf("codeGeneration.cpp: ERROR in codeGenE()");
+    }
 }
 
 /*  --------------------------------------------------------------------------------------------------------------------
