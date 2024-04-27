@@ -50,10 +50,7 @@ node_t* parser() {
     root = S();
 
     // Check for EOFtk
-    if (tokenInfo.tokenId == EOF_Token) {
-        printf("----------------------- Parsing Passed -----------------------\n");
-    }
-    else {
+    if (tokenInfo.tokenId != EOF_Token) {
         printf("parser.cpp: Error in parser()\n");
         exit(EXIT_FAILURE);
     }

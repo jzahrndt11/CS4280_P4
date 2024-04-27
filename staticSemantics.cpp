@@ -29,16 +29,15 @@ void staticSem(node_t* tree) {
         memset(symbolTable[i], '\0', MAX_TOKEN_SIZE2);
     }
 
-    printf("Traversing for Semantics:\n");
     traversePreOrder(tree, 0);
 
-    printf("----------------Semantics Passed--------------------------\n");
-    printf("Symbol Table:\n");
-    for (int i=0; i<TABLE_SIZE; i++) {
-        if (symbolTable[i][0] != '\0') {
-            printf("\t%d: %s\n", i, symbolTable[i]);
-        }
-    }
+//    printf("----------------Semantics Passed--------------------------\n");
+//    printf("Symbol Table:\n");
+//    for (int i=0; i<TABLE_SIZE; i++) {
+//        if (symbolTable[i][0] != '\0') {
+//            printf("\t%d: %s\n", i, symbolTable[i]);
+//        }
+//    }
 }
 
 // Traverse Pre-order function -----------------------------------------------------------------------------------------

@@ -42,6 +42,8 @@ void codeGeneration(node_t* tree) {
             fprintf(filePointer, "%s 0\n", tempVarTable[i]);
         }
     }
+
+    printf("COMPILATION COMPLETE: ASSEMBLY LANGUAGE FILE { %s } CREATED\n", fileBuf);
 }
 
 /*  --------------------------------------------------------------------------------------------------------------------
