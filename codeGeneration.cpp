@@ -1,9 +1,7 @@
 /*
- *  CS4280 - Project P2
+ *  CS4280 - Project P4
  *      - by. Jeremy Zahrndt
  *      - codeGeneration.cpp
- *      Resources:
- *      - https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -83,7 +81,6 @@ char* codeGenA(node_t* aNode) {
  *          - childFour: !
  *  ------------------------------------------------------------------------------------------------------------------*/
 void codeGenB(node_t* bNode) {
-    // May be able to remove LOAD for optimization
     char* aVar = codeGenA(bNode->childThree);
     fprintf(filePointer, "LOAD %s\nSTORE %s\n", aVar , bNode->childTwo->tokenInstance);
 }
